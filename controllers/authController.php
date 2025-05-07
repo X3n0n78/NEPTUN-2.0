@@ -24,7 +24,9 @@ if ($page === 'login') {
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
-                'email' => $user['email']
+                'email' => $user['email'],
+                'lastname' => $user['lastname'],
+                'firstname' => $user['firstname']
             ];
             header('Location: index.php?page=home');
             exit();
@@ -40,6 +42,7 @@ if ($page === 'login') {
     }
 }
 
+
 // Kijelentkezés
 elseif ($page === 'logout') {
     session_unset();
@@ -51,11 +54,20 @@ elseif ($page === 'logout') {
 // Regisztráció
 elseif ($page === 'register') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $lastname = trim($_POST['lastname']);
+        $firstname = trim($_POST['firstname']);
         $username = trim($_POST['username']);
         $email = trim($_POST['email']);
         $password = trim($_POST['password']);
         $confirm_password = trim($_POST['confirm_password']);
-        
+
+        // Ellenőrzések
+        if (empty($lastname) || empty($firstname)) {
+            $_SESSION['error'] = "A családi név és keresztnév megadása kötelező!";
+            header('Location: index.php?page=register');
+            exit();
+        }
+
         if ($password !== $confirm_password) {
             $_SESSION['error'] = "A jelszavak nem egyeznek!";
             header('Location: index.php?page=register');
@@ -75,8 +87,8 @@ elseif ($page === 'register') {
         }
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $success = $userModel->register($username, $hashedPassword, $email);
-        
+        $success = $userModel->register($username, $hashedPassword, $email, $lastname, $firstname);
+
         if ($success) {
             $_SESSION['success'] = "Sikeres regisztráció! Most már bejelentkezhet.";
             header('Location: index.php?page=login');
@@ -88,7 +100,8 @@ elseif ($page === 'register') {
         }
     } else {
         $title = "Regisztráció";
-        $content = 'views/register.php';
+        $content = 'views/register.php'; // vagy 'views/register.php', ha így használod
         include 'views/layout.php';
     }
 }
+

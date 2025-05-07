@@ -13,16 +13,15 @@ class UserModel {
     /**
      * Felhasználó regisztrációja
      */
-    public function register($username, $password, $email) {
+    public function register($username, $password, $email, $lastname, $firstname) {
         $stmt = $this->db->prepare("
-            INSERT INTO users 
-                (username, password, email) 
-            VALUES 
-                (?, ?, ?)
+            INSERT INTO users (username, password, email, lastname, firstname)
+            VALUES (?, ?, ?, ?, ?)
         ");
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        return $stmt->execute([$username, $hashedPassword, $email]);
+        return $stmt->execute([$username, $password, $email, $lastname, $firstname]);
     }
+    
+    
 
     /**
      * Bejelentkezés ellenőrzése
@@ -153,6 +152,15 @@ class UserModel {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getUserByUsername($username) {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getUserByEmail($email) {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
     
-
 }
