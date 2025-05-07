@@ -32,9 +32,10 @@ switch($page) {
     case 'messages':
         require 'controllers/messagesController.php';
         break;
-    case 'contact':
-        require 'controllers/contactController.php';
-        break;
+        case 'contact':
+            case 'contact_process':
+                require 'controllers/contactController.php';
+                break;
         
     case 'login':
     case 'logout':

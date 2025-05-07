@@ -36,7 +36,7 @@
                     <li><a href="index.php?page=documents">Dokumentumok</a></li>
                 <?php endif; ?>
             */ ?>
-            
+            <li><a href="index.php?page=contact">Kapcsolat</a></li>
             <?php if (isset($_SESSION['user'])): ?>
                 <li><a href="index.php?page=messages">Üzenetek</a></li>
             <?php endif; ?>
