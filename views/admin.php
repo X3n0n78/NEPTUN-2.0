@@ -74,7 +74,7 @@
         </div>
     <?php endif; ?>
 
-    <!-- Szerepkörök -->
+    <!-- Szerepkörök 
 <section class="admin-section">
     <h2>Szerepkörök <a href="index.php?page=admin&add_role=1" class="btn btn-primary">Új szerepkör</a></h2>
     <table class="admin-table">
@@ -118,4 +118,4 @@
         </tbody>
     </table>
 </section>
-</div>
+</div> --> 
