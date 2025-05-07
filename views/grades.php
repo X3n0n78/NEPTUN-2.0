@@ -33,7 +33,13 @@
             <?php endforeach; ?>
         </select>
     </label><br>
-    <label>Tantárgy: <input type="text" name="subject" required></label><br>
+    <label>Tantárgy: <select name="subject" required>
+        <option value="">Válassz tantárgyat</option>
+        <?php foreach ($subjects as $subject): ?>
+            <option value="<?= htmlspecialchars($subject['name']) ?>"><?= htmlspecialchars($subject['name']) ?></option>
+        <?php endforeach; ?>
+    </select>
+</label><br>
     <label>Jegy: <input type="number" name="grade" min="1" max="5" required></label><br>
     <label>Dátum: <input type="date" name="grade_date" required></label><br>
     <button type="submit">Mentés</button>

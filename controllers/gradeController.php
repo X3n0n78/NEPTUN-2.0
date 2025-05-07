@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__.'/../models/gradeModel.php';
+require_once __DIR__.'/../models/subjectModel.php';
 $model = new GradeModel($db);
+$subjectModel = new SubjectModel($db);
+$subjects = $subjectModel->getAllSubjects();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $model->addGrade(
