@@ -115,4 +115,44 @@ class UserModel {
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($params);
     }
+
+    ublic function getUserRoles($userId) {
+        $stmt = $this->db->prepare("
+            SELECT r.id 
+            FROM user_role ur
+            JOIN roles r ON ur.role_id = r.id
+            WHERE ur.user_id = ?
+        ");
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+
+    public function addRoleToUser($userId, $roleId) {
+        $stmt = $this->db->prepare("
+            INSERT IGNORE INTO user_role (user_id, role_id)
+            VALUES (?, ?)
+        ");
+        return $stmt->execute([$userId, $roleId]);
+    }
+
+    public function removeRoleFromUser($userId, $roleId) {
+        $stmt = $this->db->prepare("
+            DELETE FROM user_role 
+            WHERE user_id = ? AND role_id = ?
+        ");
+        return $stmt->execute([$userId, $roleId]);
+    }
+
+    public function getAllUsersWithRoles() {
+        $stmt = $this->db->query("
+            SELECT u.*, GROUP_CONCAT(r.role_name) AS roles
+            FROM users u
+            LEFT JOIN user_role ur ON u.id = ur.user_id
+            LEFT JOIN roles r ON ur.role_id = r.id
+            GROUP BY u.id
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
 }
