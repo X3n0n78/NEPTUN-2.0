@@ -46,23 +46,42 @@
     </nav>
 
     <?php if (isset($_SESSION['user'])): ?>
-        <div class="logged-in">
-            Bejelentkezett: 
-            <?= htmlspecialchars($_SESSION['user']['lastname'] ?? '') ?>
-            <?= htmlspecialchars($_SESSION['user']['firstname'] ?? '') ?>
-            (<?= htmlspecialchars($_SESSION['user']['username'] ?? '') ?>)
-            <?php if (!empty($_SESSION['user']['roles'])): ?>
-                <span class="roles">
-                    [
-                    <?= implode(', ', array_map('htmlspecialchars', $_SESSION['user']['roles'])) ?>
-                    ]
+    <div class="user-info-card">
+        <div class="user-avatar">
+            <span><?= strtoupper(mb_substr($_SESSION['user']['lastname'] ?? '', 0, 1)) ?></span>
+        </div>
+        <div class="user-details">
+            <div class="user-name">
+                <?= htmlspecialchars($_SESSION['user']['lastname'] ?? '') ?>
+                <?= htmlspecialchars($_SESSION['user']['firstname'] ?? '') ?>
+                <span class="user-username">
+                    (<?= htmlspecialchars($_SESSION['user']['username'] ?? '') ?>)
                 </span>
+            </div>
+            <?php if (!empty($_SESSION['user']['roles'])): ?>
+                <div class="user-roles">
+                    <?= implode(', ', array_map('htmlspecialchars', $_SESSION['user']['roles'])) ?>
+                </div>
             <?php endif; ?>
         </div>
-    <?php endif; ?>
-
+    </div>
+<?php endif; ?>
+                
     <main>
         <?php if (isset($content)) include $content; ?>
     </main>
+    <footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-left">
+            © <?= date('Y') ?> Tanulónyilvántartó rendszer. Stier Kristóf(H5KPH4).
+        </div>
+        <div class="footer-right">
+            <a href="mailto:info@iskola.hu" title="E-mail"><span class="footer-icon">📧</span></a>
+            <a href="https://facebook.com/" target="_blank" title="Facebook"><span class="footer-icon">🌐</span></a>
+            
+        </div>
+    </div>
+</footer>
+
 </body>
 </html>
