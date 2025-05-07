@@ -57,3 +57,39 @@ body {
 main {
     padding: 2rem;
 }
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+.responsive-table th, .responsive-table td {
+    border: 1px solid #bbb;
+    padding: 8px;
+    text-align: left;
+}
+.responsive-table th {
+    background: #e3f2fd;
+}
+@media (max-width: 700px) {
+    .responsive-table, .responsive-table thead, .responsive-table tbody, .responsive-table th, .responsive-table td, .responsive-table tr {
+        display: block;
+        width: 100%;
+    }
+    .responsive-table tr {
+        margin-bottom: 1rem;
+    }
+    .responsive-table td {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        position: relative;
+        padding-left: 50%;
+    }
+    .responsive-table td:before {
+        position: absolute;
+        left: 10px;
+        top: 8px;
+        white-space: nowrap;
+        font-weight: bold;
+        content: attr(data-label);
+    }
+}
