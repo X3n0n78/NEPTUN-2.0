@@ -1,53 +1,99 @@
 <?php
-require_once __DIR__.'/../models/gradeModel.php';
-require_once __DIR__.'/../models/studentModel.php';
-require_once __DIR__.'/../models/subjectModel.php';
+class GradeModel {
+    private $db;
 
-$model = new GradeModel($db);
-$studentModel = new StudentModel($db);
-$subjectModel = new SubjectModel($db);
-
-$students = $studentModel->getAllStudents();
-$subjects = $subjectModel->getAllSubjects();
-
-// Törlés
-if (isset($_GET['delete'])) {
-    $model->deleteGrade($_GET['delete']);
-    header('Location: index.php?page=grades');
-    exit;
-}
-
-// Szerkesztés
-$editGrade = null;
-if (isset($_GET['edit'])) {
-    $editGrade = $model->getGradeById($_GET['edit']);
-}
-
-// Hozzáadás vagy frissítés
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Frissítés
-    if (isset($_POST['update_id'])) {
-        $model->updateGrade(
-            $_POST['update_id'],
-            $_POST['student_id'],
-            $_POST['subject'],
-            $_POST['grade'],
-            $_POST['grade_date']
-        );
-    } else {
-        // Hozzáadás
-        $model->addGrade(
-            $_POST['student_id'],
-            $_POST['subject'],
-            $_POST['grade'],
-            $_POST['grade_date']
-        );
+    public function __construct($dbConnection) {
+        $this->db = $dbConnection;
     }
-    header('Location: index.php?page=grades');
-    exit;
-}
 
-$grades = $model->getAllGrades();
-$title = "Jegyek";
-$content = 'views/grades.php';
-include 'views/layout.php';
+    // Összes jegy lekérdezése
+    public function getAllGrades() {
+        $stmt = $this->db->query("
+            SELECT grades.*, 
+                   students.lastname, 
+                   students.firstname 
+            FROM grades
+            JOIN students ON grades.student_id = students.id
+            ORDER BY grade_date DESC
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Új jegy hozzáadása
+    public function addGrade($student_id, $subject, $grade, $grade_date) {
+        $stmt = $this->db->prepare("
+            INSERT INTO grades 
+                (student_id, subject, grade, grade_date) 
+            VALUES 
+                (?, ?, ?, ?)
+        ");
+        return $stmt->execute([$student_id, $subject, $grade, $grade_date]);
+    }
+
+    // Jegy törlése
+    public function deleteGrade($id) {
+        $stmt = $this->db->prepare("DELETE FROM grades WHERE id=?");
+        return $stmt->execute([$id]);
+    }
+
+    // Jegy lekérdezése ID alapján
+    public function getGradeById($id) {
+        $stmt = $this->db->prepare("SELECT * FROM grades WHERE id=?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Jegy frissítése
+    public function updateGrade($id, $student_id, $subject, $grade, $grade_date) {
+        $stmt = $this->db->prepare("
+            UPDATE grades SET 
+                student_id=?, 
+                subject=?, 
+                grade=?, 
+                grade_date=? 
+            WHERE id=?
+        ");
+        return $stmt->execute([$student_id, $subject, $grade, $grade_date, $id]);
+    }
+
+    // Tanulók listája
+    public function getStudents() {
+        $stmt = $this->db->query("
+            SELECT id, lastname, firstname 
+            FROM students 
+            ORDER BY lastname, firstname
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Tanulók tantárgyankénti átlagai
+    public function getAverageGrades() {
+        $stmt = $this->db->query("
+            SELECT 
+                students.id, 
+                CONCAT(students.lastname, ' ', students.firstname) AS name,
+                subjects.name AS subject,
+                AVG(grades.grade) AS average,
+                COUNT(grades.id) AS grade_count
+            FROM grades
+            JOIN students ON grades.student_id = students.id
+            JOIN subjects ON grades.subject = subjects.name
+            GROUP BY students.id, subjects.name
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Tantárgyankénti átlagok
+    public function getSubjectAverages() {
+        $stmt = $this->db->query("
+            SELECT 
+                subjects.name AS subject,
+                AVG(grades.grade) AS average,
+                COUNT(grades.id) AS grade_count
+            FROM grades
+            JOIN subjects ON grades.subject = subjects.name
+            GROUP BY subjects.name
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+}

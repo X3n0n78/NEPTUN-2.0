@@ -5,6 +5,7 @@ return [
         'students' => 'Tanulók',
         'grades' => 'Jegyek',
         'subjects' => 'Tantárgyak',
+        'reports'  => 'Jelentések',
         'contact' => 'Kapcsolat',
         'messages' => 'Üzenetek'
     ],

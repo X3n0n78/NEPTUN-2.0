@@ -15,6 +15,9 @@ switch($page) {
     case 'grades':
         require 'controllers/gradeController.php';
         break;
+    case 'reports':
+        require 'controllers/reportsController.php';
+        break;
     case 'login':
     case 'logout':
     case 'register':
