@@ -42,7 +42,7 @@
                     <div class="form-group">
                         <label>Válassz dokumentumot:
                             <input type="file" name="document" required 
-                                   accept=".pdf,.doc,.docx,.jpg,.png">
+                            accept=".pdf,.doc,.docx,.jpg,.png">
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">
@@ -73,8 +73,8 @@
                             <tr>
                                 <td>
                                     <a href="uploads/documents/<?= $doc['filename'] ?>" 
-                                       download="<?= htmlspecialchars($doc['original_name']) ?>"
-                                       class="document-link">
+                                    download="<?= htmlspecialchars($doc['original_name']) ?>"
+                                    class="document-link">
                                         <i class="fas fa-file"></i>
                                         <?= htmlspecialchars($doc['original_name']) ?>
                                     </a>
@@ -86,8 +86,8 @@
                                 <td>
                                     <?php if (hasPermission('delete_documents')): ?>
                                         <a href="index.php?page=documents&student_id=<?= $student_id ?>&delete=<?= $doc['id'] ?>" 
-                                           class="btn btn-danger btn-sm"
-                                           onclick="return confirm('Biztos törlöd ezt a dokumentumot?')">
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Biztos törlöd ezt a dokumentumot?')">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     <?php endif; ?>

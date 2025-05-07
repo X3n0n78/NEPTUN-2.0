@@ -10,9 +10,7 @@
 <body>
     <nav>
         <ul>
-            <?php if (hasPermission('view_dashboard')): ?>
-                <li><a href="index.php">Főoldal</a></li>
-            <?php endif; ?>
+            <li><a href="index.php">Főoldal</a></li>
 
             <?php if (hasPermission('manage_students')): ?>
                 <li><a href="index.php?page=students">Tanulók</a></li>
@@ -38,14 +36,10 @@
                 <li><a href="index.php?page=admin">Admin</a></li>
             <?php endif; ?>
 
-            <?php if (!isset($_SESSION['user'])): ?>
-                <li><a href="index.php?page=login">Belépés</a></li>
-            <?php else: ?>
+            <?php if (isset($_SESSION['user'])): ?>
                 <li><a href="index.php?page=logout">Kilépés</a></li>
-            <?php endif; ?>
-
-            <?php if (hasPermission('admin_panel')): ?>
-            <li><a href="index.php?page=admin">Admin</a></li>
+            <?php else: ?>
+                <li><a href="index.php?page=login">Belépés</a></li>
             <?php endif; ?>
 
         </ul>

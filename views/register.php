@@ -1,9 +1,13 @@
+<?php if (isset($_SESSION['error'])): ?>
+    <div class="alert error"><?= $_SESSION['error'] ?></div>
+    <?php unset($_SESSION['error']) ?>
+<?php endif; ?>
+
 <form method="post">
-    <h2>Regisztráció</h2>
-    <label>Vezetéknév: <input type="text" name="lastname" required></label><br>
-    <label>Keresztnév: <input type="text" name="firstname" required></label><br>
+    <input type="hidden" name="page" value="register">
     <label>Felhasználónév: <input type="text" name="username" required></label><br>
+    <label>Email: <input type="email" name="email" required></label><br>
     <label>Jelszó: <input type="password" name="password" required></label><br>
+    <label>Jelszó újra: <input type="password" name="confirm_password" required></label><br>
     <button type="submit">Regisztráció</button>
-    <p>Van már fiókod? <a href="index.php?page=login">Belépés</a></p>
 </form>
