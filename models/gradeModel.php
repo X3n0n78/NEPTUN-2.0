@@ -10,8 +10,8 @@ class GradeModel {
     public function getAllGrades() {
         $stmt = $this->db->query("
             SELECT grades.*, 
-                   students.lastname, 
-                   students.firstname 
+            students.lastname, 
+            students.firstname 
             FROM grades
             JOIN students ON grades.student_id = students.id
             ORDER BY grade_date DESC
@@ -20,14 +20,12 @@ class GradeModel {
     }
 
     // Új jegy hozzáadása
-    public function addGrade($student_id, $subject, $grade, $grade_date) {
+    public function addGrade($student_id, $subject, $grade, $date) {
         $stmt = $this->db->prepare("
-            INSERT INTO grades 
-                (student_id, subject, grade, grade_date) 
-            VALUES 
-                (?, ?, ?, ?)
+            INSERT INTO grades (student_id, subject, grade, grade_date)
+            VALUES (?, ?, ?, ?)
         ");
-        return $stmt->execute([$student_id, $subject, $grade, $grade_date]);
+        return $stmt->execute([$student_id, $subject, $grade, $date]);
     }
 
     // Jegy törlése
@@ -38,22 +36,19 @@ class GradeModel {
 
     // Jegy lekérdezése ID alapján
     public function getGradeById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM grades WHERE id=?");
+        $stmt = $this->db->prepare("SELECT * FROM grades WHERE id = ?");
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     // Jegy frissítése
-    public function updateGrade($id, $student_id, $subject, $grade, $grade_date) {
+    public function updateGrade($id, $student_id, $subject, $grade, $date) {
         $stmt = $this->db->prepare("
-            UPDATE grades SET 
-                student_id=?, 
-                subject=?, 
-                grade=?, 
-                grade_date=? 
-            WHERE id=?
+            UPDATE grades 
+            SET student_id = ?, subject = ?, grade = ?, grade_date = ?
+            WHERE id = ?
         ");
-        return $stmt->execute([$student_id, $subject, $grade, $grade_date, $id]);
+        return $stmt->execute([$student_id, $subject, $grade, $date, $id]);
     }
 
     // Tanulók listája

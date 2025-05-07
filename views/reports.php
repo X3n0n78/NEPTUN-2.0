@@ -1,96 +1,88 @@
 <?php
-// PHP rész: Adatok előkészítése diagramokhoz
+// Feltételezzük, hogy $studentAverages és $subjectAverages már elérhető
 
-// 1. Tantárgyankénti átlagok
+// Tantárgyankénti átlagok adatok
 $subjectLabels = [];
 $subjectAveragesData = [];
-if (isset($subjectAverages)) {
-    foreach ($subjectAverages as $row) {
-        $subjectLabels[] = $row['subject'];
-        $subjectAveragesData[] = round($row['average'], 2);
-    }
+foreach ($subjectAverages as $row) {
+    $subjectLabels[] = $row['subject'];
+    $subjectAveragesData[] = round($row['average'], 2);
 }
 
-// 2. Diákonkénti átlagok
+// Diákonkénti átlagok adatok
 $studentLabels = [];
 $studentAveragesData = [];
-if (isset($studentAverages)) {
-    foreach ($studentAverages as $row) {
-        $studentLabels[] = $row['name'];
-        $studentAveragesData[] = round($row['average'], 2);
-    }
+foreach ($studentAverages as $row) {
+    $studentLabels[] = $row['name']; // 'student' helyett 'name'
+    $studentAveragesData[] = round($row['average'], 2);
 }
 ?>
 
-<h1>Statisztikai jelentések</h1>
+<div class="reports-container">
+    <h1 class="reports-title">Statisztikai jelentések</h1>
 
-<!-- Tanulói átlagok rész -->
-<section>
-    <h2>Tanulók átlagjegyei</h2>
-    
-    <!-- Táblázat -->
-    <table class="responsive-table">
-        <thead>
-            <tr>
-                <th>Tanuló</th>
-                <th>Tantárgy</th>
-                <th>Átlag</th>
-                <th>Jegyek száma</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($studentAverages as $avg): ?>
-            <tr>
-                <td><?= htmlspecialchars($avg['name']) ?></td>
-                <td><?= htmlspecialchars($avg['subject']) ?></td>
-                <td><?= number_format($avg['average'], 2) ?></td>
-                <td><?= $avg['grade_count'] ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <!-- Vonaldiagram -->
-    <div class="chart-container">
-        <canvas id="studentAvgChart"></canvas>
+    <div class="report-card">
+        <h2>Tanulók átlagjegyei</h2>
+        <div class="report-table-container">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Tanuló</th>
+                        <th>Tantárgy</th>
+                        <th>Átlag</th>
+                        <th>Jegyek száma</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($studentAverages as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['name']) ?></td> <!-- 'student' helyett 'name' -->
+                            <td><?= htmlspecialchars($row['subject']) ?></td>
+                            <td><?= number_format($row['average'], 2) ?></td>
+                            <td><?= (int)$row['grade_count'] ?></td> <!-- 'count' helyett 'grade_count' -->
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="chart-container">
+            <canvas id="studentAveragesChart" height="180"></canvas>
+        </div>
     </div>
-</section>
 
-<!-- Tantárgyi átlagok rész -->
-<section>
-    <h2>Tantárgyankénti átlagok</h2>
-    
-    <!-- Táblázat -->
-    <table class="responsive-table">
-        <thead>
-            <tr>
-                <th>Tantárgy</th>
-                <th>Átlag</th>
-                <th>Összes jegy</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($subjectAverages as $subject): ?>
-            <tr>
-                <td><?= htmlspecialchars($subject['subject']) ?></td>
-                <td><?= number_format($subject['average'], 2) ?></td>
-                <td><?= $subject['grade_count'] ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
-    <!-- Oszlopdiagram -->
-    <div class="chart-container">
-        <canvas id="subjectAvgChart"></canvas>
+    <div class="report-card">
+        <h2>Tantárgyankénti átlagok</h2>
+        <div class="report-table-container">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Tantárgy</th>
+                        <th>Átlag</th>
+                        <th>Összes jegy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($subjectAverages as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['subject']) ?></td>
+                            <td><?= number_format($row['average'], 2) ?></td>
+                            <td><?= (int)$row['grade_count'] ?></td> <!-- 'count' helyett 'grade_count' -->
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="chart-container">
+            <canvas id="subjectAveragesChart" height="180"></canvas>
+        </div>
     </div>
-</section>
+</div>
 
-<!-- Chart.js script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Diákonkénti átlagok (vonaldiagram)
-const studentCtx = document.getElementById('studentAvgChart').getContext('2d');
+const studentCtx = document.getElementById('studentAveragesChart').getContext('2d');
+const subjectCtx = document.getElementById('subjectAveragesChart').getContext('2d');
+
 new Chart(studentCtx, {
     type: 'line',
     data: {
@@ -100,19 +92,17 @@ new Chart(studentCtx, {
             data: <?= json_encode($studentAveragesData) ?>,
             borderColor: '#4CAF50',
             backgroundColor: 'rgba(76, 175, 80, 0.2)',
-            tension: 0.4
+            tension: 0.4,
+            fill: true
         }]
     },
     options: {
         responsive: true,
-        scales: {
-            y: { beginAtZero: true }
-        }
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
     }
 });
 
-// Tantárgyankénti átlagok (oszlopdiagram)
-const subjectCtx = document.getElementById('subjectAvgChart').getContext('2d');
 new Chart(subjectCtx, {
     type: 'bar',
     data: {
@@ -127,29 +117,8 @@ new Chart(subjectCtx, {
     },
     options: {
         responsive: true,
-        scales: {
-            y: { beginAtZero: true }
-        }
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
     }
 });
 </script>
-
-<style>
-.chart-container {
-    margin: 40px 0;
-    position: relative;
-    height: 400px;
-    width: 100%;
-}
-
-.responsive-table {
-    margin-bottom: 40px;
-}
-
-section {
-    margin-bottom: 60px;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-</style>

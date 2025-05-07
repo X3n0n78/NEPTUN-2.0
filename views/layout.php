@@ -31,9 +31,12 @@
                 <li><a href="index.php?page=reports">Jelentések</a></li>
             <?php endif; ?>
             
-            <?php if (hasPermission('manage_documents')): ?>
-                <li><a href="index.php?page=documents">Dokumentumok</a></li>
-            <?php endif; ?> */
+            <?php /*
+                <?php if (hasPermission('manage_documents')): ?>
+                    <li><a href="index.php?page=documents">Dokumentumok</a></li>
+                <?php endif; ?>
+            */ ?>
+
 
             <?php if (hasPermission('admin_panel')): ?>
                 <li><a href="index.php?page=admin">Admin</a></li>
