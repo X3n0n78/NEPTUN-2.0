@@ -9,7 +9,7 @@ function hasPermission($permKey) {
     return $userModel->hasPermission($_SESSION['user']['id'], $permKey);
 }
 
-public function hasRole($userId, $roleId) {
+function hasRole($userId, $roleId) {
     $stmt = $this->db->prepare("
         SELECT COUNT(*) 
         FROM user_role 

@@ -116,7 +116,7 @@ class UserModel {
         return $stmt->execute($params);
     }
 
-    ublic function getUserRoles($userId) {
+    public function getUserRoles($userId) {
         $stmt = $this->db->prepare("
             SELECT r.id 
             FROM user_role ur
