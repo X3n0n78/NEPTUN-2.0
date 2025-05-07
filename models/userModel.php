@@ -98,22 +98,6 @@ class UserModel {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Felhasználó frissítése
-     */
-    public function updateUser(int $userId, array $data) {
-        $sql = "UPDATE users SET ";
-        $params = [];
-        foreach ($data as $key => $value) {
-            $sql .= "$key = ?, ";
-            $params[] = $value;
-        }
-        $sql = rtrim($sql, ', ') . " WHERE id = ?";
-        $params[] = $userId;
-        
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute($params);
-    }
 
     public function getUserRoles($userId) {
         $stmt = $this->db->prepare("
@@ -162,5 +146,43 @@ class UserModel {
         $stmt->execute([$email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    
+
+/**
+     * Felhasználó törlése
+     */
+    public function deleteUser($id) {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    /**
+     * Felhasználó adatainak és szerepköreinek frissítése
+     */
+    public function updateUser($id, $data) {
+        $this->db->beginTransaction();
+        try {
+            // Felhasználó adatainak frissítése
+            if (!empty($data['password'])) {
+                $stmt = $this->db->prepare("UPDATE users SET username=?, email=?, password=? WHERE id=?");
+                $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+                $stmt->execute([$data['username'], $data['email'], $hashedPassword, $id]);
+            } else {
+                $stmt = $this->db->prepare("UPDATE users SET username=?, email=? WHERE id=?");
+                $stmt->execute([$data['username'], $data['email'], $id]);
+            }
+            
+            // Szerepkörök frissítése (a user_role táblában)
+            $this->db->prepare("DELETE FROM user_role WHERE user_id = ?")->execute([$id]);
+            foreach ($data['roles'] as $roleId) {
+                $this->db->prepare("INSERT INTO user_role (user_id, role_id) VALUES (?, ?)")->execute([$id, $roleId]);
+            }
+            
+            $this->db->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return false;
+        }
+    }
 }
+

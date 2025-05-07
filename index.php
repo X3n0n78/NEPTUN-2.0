@@ -15,7 +15,7 @@ switch($page) {
         require 'controllers/homeController.php';
         break;
     case 'admin':
-        require 'controllers/AdminController.php';
+        require 'controllers/adminController.php';
         break;
     case 'students':
         require 'controllers/studentController.php';
@@ -29,6 +29,13 @@ switch($page) {
     case 'documents':
         require 'controllers/documentController.php';
         break;
+    case 'messages':
+        require 'controllers/messagesController.php';
+        break;
+        case 'contact':
+            case 'contact_process':
+                require 'controllers/contactController.php';
+                break;
         
     case 'login':
     case 'logout':
