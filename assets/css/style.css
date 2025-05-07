@@ -158,3 +158,27 @@ hr {
     background-color: #f8f9fa;
     font-weight: 600;
 }
+.photo-preview {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+}
+
+.photo-preview img {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.responsive-table img {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+/* Új gomb szín a Dokumentumokhoz */
+.button.info {
+    background: #00bcd4;
+}
+
+.button.info:hover {
+    background: #0097a7;
+}

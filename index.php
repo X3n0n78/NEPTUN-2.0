@@ -22,6 +22,10 @@ switch($page) {
     case 'reports':
         require 'controllers/reportsController.php';
         break;
+    case 'documents':
+        require 'controllers/documentController.php';
+        break;
+        
     case 'login':
     case 'logout':
     case 'register':
