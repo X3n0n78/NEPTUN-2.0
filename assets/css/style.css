@@ -1,0 +1,17 @@
+.responsive-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+@media (max-width: 768px) {
+    .responsive-table td {
+        display: block;
+        text-align: right;
+    }
+    
+    .responsive-table td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+}
