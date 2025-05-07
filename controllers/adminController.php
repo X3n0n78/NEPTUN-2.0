@@ -1,5 +1,4 @@
 <?php
-// controllers/AdminController.php
 
 require_once __DIR__.'/../includes/middleware.php';
 require_once __DIR__.'/../models/userModel.php';
@@ -13,51 +12,90 @@ requirePermission('admin_panel', $GLOBALS['db']);
 $userModel = new UserModel($GLOBALS['db']);
 $roleModel = new RoleModel($GLOBALS['db']);
 
-// POST kérés kezelése - szerepkörök frissítése
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['user_id'])) {
-    try {
-        // Adatok validálása
-        $userId = filter_input(INPUT_POST, 'user_id', FILTER_VALIDATE_INT);
-        $selectedRoles = $_POST['roles'] ?? [];
-        
-        if (!$userId || $userId < 1) {
-            throw new Exception("Érvénytelen felhasználó azonosító!");
-        }
+// Alapértelmezett adatok
+$editUser = null;
+$allRoles = [];
+$users = [];
+$roles = [];
 
-        // Jelenlegi és új szerepkörök összehasonlítása
-        $currentRoles = $userModel->getUserRoles($userId);
-        $allRoles = $roleModel->getAllRoles();
-
-        foreach ($allRoles as $role) {
-            $roleId = $role['id'];
-            
-            // Szerepkör hozzáadása
-            if (in_array($roleId, $selectedRoles) && !in_array($roleId, $currentRoles)) {
-                $userModel->addRoleToUser($userId, $roleId);
+// ACTION KEZELÉSE
+if (isset($_GET['action'])) {
+    switch ($_GET['action']) {
+        case 'delete_user':
+            if (isset($_GET['id'])) {
+                if ($userModel->deleteUser($_GET['id'])) {
+                    $_SESSION['success'] = "Felhasználó törölve!";
+                } else {
+                    $_SESSION['error'] = "Hiba a törlés során!";
+                }
+                header('Location: index.php?page=admin');
+                exit;
             }
-            
-            // Szerepkör eltávolítása
-            if (!in_array($roleId, $selectedRoles) && in_array($roleId, $currentRoles)) {
-                $userModel->removeRoleFromUser($userId, $roleId);
-            }
-        }
+            break;
 
-        $_SESSION['success'] = "A szerepkörök sikeresen frissítve!";
-        
-    } catch (Exception $e) {
-        $_SESSION['error'] = "Hiba: " . $e->getMessage();
+        case 'edit_user':
+            if (isset($_GET['id'])) {
+                $editUser = $userModel->getUserById($_GET['id']);
+                $editUser['role_ids'] = $userModel->getUserRoles($_GET['id']);
+                $allRoles = $roleModel->getAllRoles();
+            }
+            break;
+
+        case 'add_user':
+            $editUser = ['id' => 0, 'username' => '', 'email' => '', 'role_ids' => []];
+            $allRoles = $roleModel->getAllRoles();
+            break;
+
+        case 'save_user':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = (int)($_POST['id'] ?? 0);
+                $data = [
+                    'username' => trim($_POST['username']),
+                    'email'    => trim($_POST['email']),
+                    'password' => trim($_POST['password']),
+                    'roles'    => $_POST['roles'] ?? []
+                ];
+
+                try {
+                    if ($id) {
+                        $success = $userModel->updateUser($id, $data);
+                    } else {
+                        $success = $userModel->createUser($data);
+                    }
+
+                    if ($success) {
+                        $_SESSION['success'] = "Sikeres mentés!";
+                    } else {
+                        $_SESSION['error'] = "Hiba a mentés során!";
+                    }
+                } catch (Exception $e) {
+                    $_SESSION['error'] = $e->getMessage();
+                }
+                
+                header('Location: index.php?page=admin');
+                exit;
+            }
+            break;
+
+        case 'delete_role':
+            if (isset($_GET['id'])) {
+                if ($roleModel->deleteRole($_GET['id'])) {
+                    $_SESSION['success'] = "Szerepkör törölve!";
+                } else {
+                    $_SESSION['error'] = "Hiba a törlés során!";
+                }
+                header('Location: index.php?page=admin');
+                exit;
+            }
+            break;
     }
-    
-    // Oldal újratöltése
-    header("Location: " . $_SERVER['REQUEST_URI']);
-    exit;
 }
 
-// Adatok lekérése a nézethez
+// ADATOK LEKÉRÉSE
 $users = $userModel->getAllUsersWithRoles();
-$roles = $roleModel->getAllRoles();
+$roles = $roleModel->getAllRolesWithPermissions();
 
-// Nézet betöltése
+// NÉZET BETÖLTÉSE
 $title = "Adminisztrációs felület";
 $content = __DIR__.'/../views/admin.php';
 include __DIR__.'/../views/layout.php';
