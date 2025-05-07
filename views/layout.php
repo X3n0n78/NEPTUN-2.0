@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title><?= $title ?? 'Tanulónyilvántartó rendszer' ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/fontawesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/brands.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -27,10 +30,10 @@
             <?php if (hasPermission('view_reports')): ?>
                 <li><a href="index.php?page=reports">Jelentések</a></li>
             <?php endif; ?>
-
+            
             <?php if (hasPermission('manage_documents')): ?>
                 <li><a href="index.php?page=documents">Dokumentumok</a></li>
-            <?php endif; ?>
+            <?php endif; ?> */
 
             <?php if (hasPermission('admin_panel')): ?>
                 <li><a href="index.php?page=admin">Admin</a></li>

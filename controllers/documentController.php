@@ -1,12 +1,15 @@
 <?php
 // controllers/DocumentController.php
 
+
 require_once __DIR__.'/../includes/middleware.php';
 require_once __DIR__.'/../models/documentModel.php';
 require_once __DIR__.'/../models/studentModel.php';
 require_once __DIR__.'/../models/userModel.php';
+require_once __DIR__.'/../includes/helpers.php';
 
-session_start();
+
+//NOTE - session_start();
 
 // Adatbázis kapcsolat
 global $db;
@@ -21,11 +24,14 @@ $studentModel = new StudentModel($db);
 $userModel = new UserModel($db);
 
 // Paraméterek ellenőrzése
-$student_id = $_GET['student_id'] ?? null;
-if (!$student_id || !$studentModel->getStudentById($student_id)) {
+$student_id = isset($_GET['student_id']) ? (int)$_GET['student_id'] : 0;
+
+// Ellenőrizd, hogy létezik-e a tanuló
+$student = $studentModel->getStudentById($student_id);
+if (!$student) {
     $_SESSION['error'] = "Érvénytelen tanuló azonosító!";
     header('Location: index.php?page=students');
-    exit;
+    exit; // Fontos, hogy itt legyen exit, különben folytatódik a kód
 }
 
 // POST kérés kezelése: dokumentum feltöltése

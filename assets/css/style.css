@@ -1078,3 +1078,744 @@ body {
     font-weight: 500;
     margin-top: 2px;
 }
+
+body {
+    background: linear-gradient(120deg, #e0eafc, #cfdef3);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.document-header h1 {
+    font-size: 2rem;
+    color: #222;
+    margin: 0 0 16px 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.upload-form {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    padding: 18px 22px 14px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 240px;
+}
+
+.upload-form label {
+    font-weight: 500;
+    color: #1976d2;
+    margin-bottom: 6px;
+}
+
+.upload-form input[type="file"] {
+    margin-left: 8px;
+}
+
+.upload-form button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 22px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: background 0.2s;
+}
+
+.upload-form button:hover {
+    background: #1257a8;
+}
+
+.document-list {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    padding: 18px 18px 10px 18px;
+    margin-top: 16px;
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.table th, .table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #e3e8f0;
+    text-align: left;
+}
+
+.table th {
+    background: #1976d2;
+    color: #fff;
+    font-size: 1.07em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #f3f6fc;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #e0eafc;
+}
+
+.document-link {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.document-link:hover {
+    color: #0d47a1;
+    text-decoration: underline;
+}
+
+.btn, .btn-primary, .btn-danger, .btn-sm {
+    display: inline-block;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 7px 16px;
+    text-decoration: none;
+    transition: background 0.2s;
+    margin: 0 2px;
+}
+
+.btn-primary {
+    background: #1976d2;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1257a8;
+}
+
+.btn-danger {
+    background: #e53935;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #ab000d;
+}
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 0.97rem;
+}
+
+.alert {
+    padding: 10px 16px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.alert-danger {
+    background: #fdecea;
+    color: #a94442;
+}
+
+.alert-success {
+    background: #e3fbe3;
+    color: #256029;
+}
+
+.alert-info {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+@media (max-width: 900px) {
+    .document-header {
+        flex-direction: column;
+        gap: 18px;
+    }
+    .document-list {
+        padding: 8px 2vw 8px 2vw;
+    }
+    .table {
+        min-width: 500px;
+        font-size: 0.97rem;
+    }
+}
+/* Feltöltési blokk konténer */
+.upload-container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Feltöltési címke stílusa */
+.upload-container label {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+}
+
+/* Fájl feltöltés input elrejtése és helyettesítése */
+.upload-container input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+
+/* Egyedi feltöltési gomb */
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px 16px;
+    background: #f0f4f8;
+    border: 1px solid #d0d8e0;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.custom-file-upload:hover {
+    background: #e0e8f0;
+}
+
+/* Feltöltés gomb */
+.upload-btn {
+    background: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.upload-btn:hover {
+    background: #1565c0;
+}
+
+.upload-btn::before {
+    content: "⬆";
+    font-size: 16px;
+}
+/* Táblázat konténer */
+.document-list {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/* Táblázat alap stílus */
+.document-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+/* Fejléc és cella stílusok */
+.document-table th {
+    background: #f0f4f8;
+    color: #333;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 2px solid #e0e8f0;
+}
+
+.document-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e8f0;
+    color: #444;
+}
+
+/* Sorok közötti váltakozó szín */
+.document-table tr:nth-child(even) {
+    background-color: #f9fafc;
+}
+
+.document-table tr:hover {
+    background-color: #f0f4f8;
+}
+
+/* Fájl ikon és link stílus */
+.file-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #1976d2;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+/* Törlés gomb stílusa */
+.delete-btn {
+    background: #e53935;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.delete-btn:hover {
+    background: #c62828;
+}
+.document-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+    margin-top: 30px;
+}
+
+.upload-form {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(25,118,210,0.08);
+    padding: 24px 28px 18px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.upload-form label {
+    font-weight: 600;
+    color: #1976d2;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.custom-file-upload {
+    background: #f6f8fa;
+    border: 1.5px solid #bdbdbd;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: border 0.2s;
+    font-weight: 500;
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.custom-file-upload:hover {
+    border-color: #1976d2;
+    background: #e3f2fd;
+}
+
+.upload-btn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.18s;
+    margin-top: 8px;
+    font-size: 1.08rem;
+}
+
+.upload-btn:hover {
+    background: #1257a8;
+}
+
+.upload-form .file-info {
+    font-size:
+    0.95rem;
+    color: #444;}
+
+    body {
+        background: linear-gradient(120deg, #e0eafc, #cfdef3);
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+    }
+    
+    .grades-page {
+        max-width: 1100px;
+        margin: 40px auto 0 auto;
+        padding: 32px 20px;
+        background: rgba(255,255,255,0.98);
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    
+    .grades-page h1 {
+        text-align: center;
+        color: #1976d2;
+        margin-bottom: 2rem;
+    }
+    
+    .grade-form-section {
+        margin-bottom: 2.5rem;
+        background: #f3f6fc;
+        padding: 18px 20px 14px 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(25,118,210,0.04);
+        max-width: 520px;
+    }
+    
+    .grade-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px 24px;
+    }
+    
+    .grade-form label {
+        display: flex;
+        flex-direction: column;
+        font-weight: 500;
+        color: #333;
+        flex: 1 1 220px;
+        min-width: 180px;
+    }
+    
+    .grade-form input[type="number"],
+    .grade-form input[type="date"],
+    .grade-form select {
+        padding: 8px 10px;
+        margin-top: 4px;
+        border: 1px solid #bdbdbd;
+        border-radius: 4px;
+        font-size: 1rem;
+        background: #f9f9f9;
+        transition: border 0.2s;
+    }
+    
+    .grade-form input:focus,
+    .grade-form select:focus {
+        border-color: #1976d2;
+        outline: none;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-right: 6px;
+        transition: background 0.2s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-primary {
+        background: #1976d2;
+        color: #fff;
+    }
+    
+    .btn-primary:hover {
+        background: #1257a8;
+    }
+    
+    .btn-edit {
+        background: #4caf50;
+        color: #fff;
+    }
+    
+    .btn-edit:hover {
+        background: #357a38;
+    }
+    
+    .btn-delete {
+        background: #e53935;
+        color: #fff;
+    }
+    
+    .btn-delete:hover {
+        background: #ab000d;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+        margin-top: 24px;
+    }
+    
+    .grades-table {
+        border-collapse: collapse;
+        margin: 0 auto;
+        font-size: 1rem;
+        min-width: 700px;
+        width: 100%;
+        box-shadow: 0 0 12px rgba(25,118,210,0.07);
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .grades-table thead tr {
+        background-color: #1976d2;
+        color: #fff;
+        text-align: left;
+    }
+    
+    .grades-table th,
+    .grades-table td {
+        padding: 13px 16px;
+        border-bottom: 1px solid #e3e8f0;
+    }
+    
+    .grades-table tbody tr:nth-of-type(even) {
+        background-color: #f3f6fc;
+    }
+    
+    .grades-table tbody tr:hover {
+        background-color: #e0eafc;
+    }
+    
+    .grades-table th {
+        font-size: 1.08em;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+    
+    .grade-mark {
+        font-size: 1.15em;
+        font-weight: bold;
+        color: #1976d2;
+        text-align: center;
+    }
+    
+    @media (max-width: 900px) {
+        .grades-page {
+            padding: 12px 2vw;
+        }
+        .grade-form-section {
+            max-width: 100%;
+        }
+        .grades-table {
+            min-width: 480px;
+            font-size: 0.97rem;
+        }
+    }
+    body {
+        background: linear-gradient(120deg, #e0eafc, #cfdef3);
+        font-family: 'Segoe UI', Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+    }
+    
+    .grades-page {
+        max-width: 1100px;
+        margin: 40px auto 0 auto;
+        padding: 32px 20px;
+    }
+    
+    .grades-page h1 {
+        text-align: center;
+        color: #1976d2;
+        margin-bottom: 2rem;
+    }
+    
+    .grades-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+        padding: 32px 24px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+    }
+    
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .grades-table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 700px;
+        background: #fff;
+        box-shadow: 0 0 12px rgba(25,118,210,0.07);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .grades-table th,
+    .grades-table td {
+        padding: 13px 16px;
+        border-bottom: 1px solid #e3e8f0;
+    }
+    
+    .grades-table thead tr {
+        background-color: #1976d2;
+        color: #fff;
+        text-align: left;
+    }
+    
+    .grades-table tbody tr:nth-of-type(even) {
+        background-color: #f3f6fc;
+    }
+    
+    .grades-table tbody tr:hover {
+        background-color: #e0eafc;
+    }
+    
+    .grades-table th {
+        font-size: 1.08em;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+    
+    .grade-mark {
+        font-size: 1.15em;
+        font-weight: bold;
+        color: #1976d2;
+        text-align: center;
+    }
+    
+    .grade-form-section {
+        background: #f3f6fc;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(25,118,210,0.04);
+        max-width: 520px;
+        margin: 0 auto;
+        padding: 22px 18px 14px 18px;
+    }
+    
+    .grade-form-section h2 {
+        font-size: 1.2rem;
+        color: #1976d2;
+        margin-bottom: 1.1rem;
+        text-align: center;
+    }
+    
+    .grade-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px 24px;
+        justify-content: center;
+    }
+    
+    .grade-form label {
+        display: flex;
+        flex-direction: column;
+        font-weight: 500;
+        color: #333;
+        flex: 1 1 220px;
+        min-width: 180px;
+    }
+    
+    .grade-form input[type="number"],
+    .grade-form input[type="date"],
+    .grade-form select {
+        padding: 8px 10px;
+        margin-top: 4px;
+        border: 1px solid #bdbdbd;
+        border-radius: 4px;
+        font-size: 1rem;
+        background: #f9f9f9;
+        transition: border 0.2s;
+    }
+    
+    .grade-form input:focus,
+    .grade-form select:focus {
+        border-color: #1976d2;
+        outline: none;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-right: 6px;
+        transition: background 0.2s;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-primary {
+        background: #1976d2;
+        color: #fff;
+    }
+    
+    .btn-primary:hover {
+        background: #1257a8;
+    }
+    
+    .btn-edit {
+        background: #4caf50;
+        color: #fff;
+    }
+    
+    .btn-edit:hover {
+        background: #357a38;
+    }
+    
+    .btn-delete {
+        background: #e53935;
+        color: #fff;
+    }
+    
+    .btn-delete:hover {
+        background: #ab000d;
+    }
+    
+    @media (max-width: 900px) {
+        .grades-card {
+            padding: 14px 2vw;
+        }
+        .grades-table {
+            min-width: 480px;
+            font-size: 0.97rem;
+        }
+        .grade-form-section {
+            max-width: 100%;
+        }
+    }
+    
