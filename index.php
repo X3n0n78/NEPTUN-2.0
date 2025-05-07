@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 require __DIR__.'/includes/database.php';
 $config = require __DIR__.'/config.php';
@@ -15,6 +19,13 @@ switch($page) {
     case 'grades':
         require 'controllers/gradeController.php';
         break;
+    case 'reports':
+        require 'controllers/reportsController.php';
+        break;
+    case 'documents':
+        require 'controllers/documentController.php';
+        break;
+        
     case 'login':
     case 'logout':
     case 'register':
