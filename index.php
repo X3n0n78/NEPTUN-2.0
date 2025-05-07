@@ -14,6 +14,9 @@ switch($page) {
     case 'home':
         require 'controllers/homeController.php';
         break;
+    case 'admin':
+        require 'controllers/AdminController.php';
+        break;
     case 'students':
         require 'controllers/studentController.php';
         break;

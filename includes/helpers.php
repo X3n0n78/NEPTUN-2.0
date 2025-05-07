@@ -8,3 +8,14 @@ function hasPermission($permKey) {
     $userModel = new UserModel($db);
     return $userModel->hasPermission($_SESSION['user']['id'], $permKey);
 }
+
+public function hasRole($userId, $roleId) {
+    $stmt = $this->db->prepare("
+        SELECT COUNT(*) 
+        FROM user_role 
+        WHERE user_id = ? AND role_id = ?
+    ");
+    $stmt->execute([$userId, $roleId]);
+    return $stmt->fetchColumn() > 0;
+}
+

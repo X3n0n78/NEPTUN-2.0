@@ -43,6 +43,11 @@
             <?php else: ?>
                 <li><a href="index.php?page=logout">Kilépés</a></li>
             <?php endif; ?>
+
+            <?php if (hasPermission('admin_panel')): ?>
+            <li><a href="index.php?page=admin">Admin</a></li>
+            <?php endif; ?>
+
         </ul>
     </nav>
 
